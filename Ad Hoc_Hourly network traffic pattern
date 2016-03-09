@@ -1,0 +1,40 @@
+Hourly network traffic pattern
+
+
+-- rl2 redshift
+SELECT
+device_platformtypeId,
+extract(hour from timestamp) as hour,
+count(distinct deliveryId) as AdRequests
+FROM
+public.rl2_delivery
+WHERE
+valid=1
+AND timestamp >= '2016-01-04 00:00:00' AND timestamp < '2016-01-11 00:00:00'
+--AND user_marketid=4
+GROUP BY 
+1,2
+ORDER BY 
+1,2 ;
+
+-- config db RDS
+select 
+min(extract(date from timestamp)),
+max(extract(date from timestamp))
+from 
+public.rl2_delivery;
+
+-- rl1 redshift
+select 
+optb26 as platformtype,
+th as hour,
+count(distinct requestlogid) as AdRequests
+from 
+requestlog
+where
+valid=1
+and optdate1>= '2016-01-04'
+and optdate1<='2016-01-10'
+-- and marketid=4
+group by 1,2
+order by 1,2;

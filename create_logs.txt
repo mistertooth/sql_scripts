@@ -1,0 +1,286 @@
+create external table if not exists InScreenLog_cp(
+createdDate string, 
+unknownInt0_t0_23 int, 
+serverTimestamp string, 
+deviceTimestamp string, 
+adId int, 
+refReqLogId bigint, 
+sid string, 
+pctInScreen int, 
+width int, 
+height int, 
+xpos int,
+ypos int,
+relX double,
+relY double,
+incrementalTimeMs int,
+previousPctInScreen int,
+deviceTimestampUnixMs bigint
+)
+PARTITIONED BY (created STRING)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+LOCATION 's3://ws-storage1/logs/inscreen_cp_logs/';
+
+msck repair table InScreenLog_cp;
+
+CREATE EXTERNAL TABLE RequestLog(
+--GENERAL(basically MUST-HAVE):--
+created STRING,
+requestLogId BIGINT,
+adId BIGINT,
+adSpaceId INT,
+opti5 INT, --adSpace accountId--
+opti6 INT, --adSpace siteId) --
+uid STRING,
+validImp INT,
+optb21 TINYINT, --filler level,not necessary for testing --
+validClick TINYINT,
+validCharge DOUBLE,
+optl5  BIGINT, --allowed formats--
+marketId INT,
+optb10 TINYINT, --AdSpace market--
+TD TINYINT, --not  necessary testing--
+TH TINYINT, --not be necessary testing--
+
+--GEO (Given DE market characteristics, it's very important to have quality state based/top10 city based analysis--
+ipcountryCode STRING,
+ipRegion STRING,
+ipCity STRING,
+ipLong DOUBLE,
+ipLat DOUBLE,
+optf3 FLOAT, -- (GPS longtitude from API request--
+optf4 FLOAT, --GPS latitude from API request--
+opt2 STRING, --ISP IP--
+opts7 STRING, --user postal city--
+
+--DEMOGRAPHICS (Could be useful based on experience of SE market, not necessary for testing--
+optb3 TINYINT, --user age--
+optb4 TINYINT, --user gender--
+optb13 TINYINT, --age from API--
+optb14 TINYINT, --Gender from request--
+
+--DEVICE (Could be useful based on experience of SE market, not necessary for testing--
+deviceId INT,
+opti2 INT, --user device OSId--
+opts4 STRING, --connection type--
+opts5 STRING, --user device model--
+opti3 INT, --user device platform id--
+
+--REVENUE (Could be useful for internal reporting, not necessary for testing--
+ecpi DOUBLE,
+ecpia DOUBLE,
+bid DOUBLE,
+
+-- Extra column added
+optb1 TINYINT,
+transactionbid DOUBLE,
+pub TINYINT,
+optb20 TINYINT,
+unknowndeviceid int,
+operatorid int,
+clientip string,
+requesttype string,
+devicelocale string,
+trackerid string,
+clicks tinyint,
+refreqlogid bigint,
+bidtype string,
+intexttype tinyint,
+valid tinyint,
+adperfref string,
+adperfno tinyint,
+adperfsales double,
+uniqueuserid int,
+version smallint,
+opt1 string,
+adnwid smallint,
+adspacenwid smallint,
+saleref tinyint,
+system tinyint,
+pubref tinyint,
+ipvalid tinyint,
+serverid tinyint,
+optb2 tinyint,
+optb5 tinyint,
+optb6 tinyint,
+optb7 tinyint,
+optb8 tinyint,
+optb9 tinyint,
+optb11 tinyint,
+optb12 tinyint,
+optb15 tinyint,
+optb16 tinyint,
+optb17 tinyint,
+optb18 tinyint,
+optb19 tinyint,
+optb22 tinyint,
+optb23 tinyint,
+optb24 tinyint,
+optb25 tinyint,
+optb26 tinyint,
+optb27 tinyint,
+opt2b1 smallint,
+opt2b2 smallint,
+opt2b3 smallint,
+opt2b4 smallint,
+opt2b5 smallint,
+opt2b6 smallint,
+opt2b7 smallint,
+opt2b8 smallint,
+opt2b9 smallint,
+opt2b10 smallint,
+opt2b11 smallint,
+opt2b12 smallint,
+opti1 int,
+opti4 int,
+opti7 int,
+opti8 int,
+opti9 int,
+optl1 bigint,
+optl2 bigint,
+optl3 bigint,
+optl4 bigint,
+optf1 float,
+optf2 float,
+optf5 float,
+optf6 float,
+optf7 float,
+optf8 float,
+optf9 float,
+optf10 float,
+optf11 float,
+optf12 float,
+optf13 float,
+optf14 float,
+optf15 float,
+optd1 double,
+optd2 double,
+optdate1 timestamp,
+optdate2 timestamp,
+optdate3 timestamp,
+optdate4 timestamp,
+opts1 string,
+opts2 string,
+opts3 string,
+opts6 string,
+optb28 smallint,
+optb29 smallint,
+optb30 smallint,
+optb31 smallint,
+optb32 smallint,
+optb33 smallint,
+optb34 smallint,
+optb35 smallint,
+optb36 smallint,
+optb37 smallint,
+optb38 smallint,
+optb39 smallint,
+optb40 smallint,
+optb41 smallint,
+optb42 smallint,
+optb43 smallint,
+optb44 smallint,
+optb45 smallint,
+optb46 smallint,
+optb47 smallint,
+optb48 smallint,
+optb49 smallint,
+optb50 smallint,
+opti10 int,
+opti11 int,
+opti12 int,
+opti13 int,
+opti14 int,
+opti15 int,
+opti16 int,
+opti17 int,
+opti18 int,
+opti19 int,
+opti20 int,
+optis1 int,
+optis2 int,
+optis3 int,
+optis4 int,
+optis5 int,
+optl6 bigint,
+optl7 bigint,
+optl8 bigint,
+optl9 bigint,
+optl10 bigint,
+optl11 bigint,
+optl12 bigint,
+optl13 bigint,
+optl14 bigint,
+optl15 bigint,
+optf16 float,
+optf17 float,
+optf18 float,
+optf19 float,
+optf20 float,
+optf21 float,
+optf22 float,
+optf23 float,
+optf24 float,
+optf25 float,
+optd3 double,
+optd4 double,
+optd5 double,
+optd6 double,
+optd7 double,
+optd8 double,
+optd9 double,
+optd10 double,
+opts8 string,
+opts9 string,
+opts10 string,
+opts11 string,
+opts12 string,
+opts13 string,
+opts14 string,
+opts15 string,
+opts16 string,
+opts17 string,
+opts18 string,
+opts19 string,
+opts20 string,
+opts21 string,
+opts22 string,
+opts23 string,
+opts24 string,
+opts25 string,
+opts26 string,
+opts27 string,
+opts28 string,
+opts29 string,
+opts30 string	
+)
+PARTITIONED BY (created1 STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+LOCATION 's3://ws-storage1/data/RequestLog/';
+
+msck repair table RequestLog;
+
+
+CREATE EXTERNAL TABLE IF NOT EXISTS UserAdImpactMetrics(
+timestamp BIGINT,
+uid BIGINT,
+adid INT,
+swipeCount INT,
+clickCount INT,
+closeCount INT,
+totalViewTime BIGINT,
+relativeViewTime BIGINT,
+adRelevance DOUBLE,
+adRecall DOUBLE
+)
+PARTITIONED BY (date STRING)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+LOCATION 's3://wsprofiling/daily/ad-impact-model/user-ad-impact-metrics/';
+
+
+MSCK REPAIR TABLE UserAdImpactMetrics;
